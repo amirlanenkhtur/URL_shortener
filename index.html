@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title> URL shortener </title>
+        <link href="styles.css" rel="stylesheet">
+    </head>
     <body>
-        <h2>URL Shortener</h2>
-        <input id="url" placeholder="Enter URL" />
-        <button onclick="shorten()">Shorten</button>
+        <div class="container">
+            <h1>URL Shortener</h1>
+            <input id="url" placeholder="Enter your long URL..." />
+            <button onclick="shorten()">Shorten URL</button>
 
-        <p id="result"></p>
+            <div class="result"></div>
+        </div>
+    
 
         <script>
             async function shorten() {
@@ -18,7 +25,18 @@
                 });
 
                 const data = await res.json();
-                document.getElementById('result').innerText = data.shortUrl;
+
+                document.getElementById('result').innerHTML = `
+                    <p>Short URL:</p>
+                    <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a>
+                    <br/>
+                    <button class="copy-btn" onclick="copy('${data.shortUrl}')">Copy</button>
+                `;
+            }
+
+            function copy(text) {
+                navigator.clipboard.writeText(text);
+                alert("Copied!");
             }
         </script>
 </body>
